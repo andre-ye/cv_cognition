@@ -1,0 +1,655 @@
+<html>
+<head>
+  <title>Verify whether the answers to questions about a pictures are accurate</title>
+  <!-- easyturk depends on these libraries -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
+  <!-- end of required libraries -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+  <style>
+    #counter {
+      margin: 0 10px;
+      font-size: 20pt;
+      font-weight: bold;
+    }
+    img {
+      height: 600px;
+    }
+    img.example {
+      height: 200px;
+    }
+    .tasks-container {
+      margin-top: 15px;
+      margin-bottom: 30px;
+      background-color: #DBDBDB;
+    }
+    .examples-container {
+      margin-top: 15px;
+      margin-bottom: 30px;
+      background-color: #9fbccb;
+    }
+    .instructions-container {
+      margin-top: 15px;
+      margin-bottom: 30px;
+      background-color: #F0EAD6;
+    }
+    p {
+      font-size: 17px;
+      text-align: center;
+    }
+    li {
+        font-size: 22px;
+    }
+    div {
+        font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+<div class='container instructions-container'>
+  <div id='instructions-section'>
+    <div class='instructions'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <h1>Instructions</h1>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-12'>
+          <ul>
+            <li>Verify whether answers to questions about pictures are accurate.</li>
+            <li>In this task, you will be shown a picture and a questions and answer. Your task is to say whether the answer is correct.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='container tasks-container'>
+  <div class='container'>
+    <h2>Here are the answers with questions and pictures we would like you to verify:</h2>
+  </div>
+
+  <div class='container-fluid'>
+    <!-- <div class='row'>
+      <div class='col-12'>
+        <div id='image-container'>
+        </div>
+      </div>
+    </div> -->
+    <br />
+    <br />
+    <!-- <h2 style='color: black;' id='q1_option1'></h2>
+    <h2 style='color: black;' id='q0_option1'></h2>-->
+
+    <!-- <h2 style='color: blue;' id='question'></h2>
+    <h2 style='color: red;' id='answer'></h2> -->
+
+    <!-- <h3 style='color: black;' id='q0_option1'></h3> -->
+
+    <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[1/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm0'>
+            <input type="checkbox" id="q0_option1" name="q0_option1" value="1">
+            <label for="q0_option1" id="q0_option1_lab"></label><br>
+            <input type="checkbox" id="q0_option2" name="q0_option2" value="2">
+            <label for="q0_option2" id="q0_option2_lab"></label><br>
+            <input type="checkbox" id="q0_option3" name="q0_option3" value="3">
+            <label for="q0_option3" id="q0_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[2/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm1'>
+            <input type="checkbox" id="q1_option1" name="q1_option1" value="1">
+            <label for="q1_option1" id="q1_option1_lab"></label><br>
+            <input type="checkbox" id="q1_option2" name="q1_option2" value="2">
+            <label for="q1_option2" id="q1_option2_lab"></label><br>
+            <input type="checkbox" id="q1_option3" name="q1_option3" value="3">
+            <label for="q1_option3" id="q1_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[3/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm2'>
+            <input type="checkbox" id="q2_option1" name="q2_option1" value="1">
+            <label for="q2_option1" id="q2_option1_lab"></label><br>
+            <input type="checkbox" id="q2_option2" name="q2_option2" value="2">
+            <label for="q2_option2" id="q2_option2_lab"></label><br>
+            <input type="checkbox" id="q2_option3" name="q2_option3" value="3">
+            <label for="q2_option3" id="q2_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[4/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm3'>
+            <input type="checkbox" id="q3_option1" name="q3_option1" value="1">
+            <label for="q3_option1" id="q3_option1_lab"></label><br>
+            <input type="checkbox" id="q3_option2" name="q3_option2" value="2">
+            <label for="q3_option2" id="q3_option2_lab"></label><br>
+            <input type="checkbox" id="q3_option3" name="q3_option3" value="3">
+            <label for="q3_option3" id="q3_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[5/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm4'>
+            <input type="checkbox" id="q4_option1" name="q4_option1" value="1">
+            <label for="q4_option1" id="q4_option1_lab"></label><br>
+            <input type="checkbox" id="q4_option2" name="q4_option2" value="2">
+            <label for="q4_option2" id="q4_option2_lab"></label><br>
+            <input type="checkbox" id="q4_option3" name="q4_option3" value="3">
+            <label for="q4_option3" id="q4_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[6/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm5'>
+            <input type="checkbox" id="q5_option1" name="q5_option1" value="1">
+            <label for="q5_option1" id="q5_option1_lab"></label><br>
+            <input type="checkbox" id="q5_option2" name="q5_option2" value="2">
+            <label for="q5_option2" id="q5_option2_lab"></label><br>
+            <input type="checkbox" id="q5_option3" name="q5_option3" value="3">
+            <label for="q5_option3" id="q5_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[7/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm6'>
+            <input type="checkbox" id="q6_option1" name="q6_option1" value="1">
+            <label for="q6_option1" id="q6_option1_lab"></label><br>
+            <input type="checkbox" id="q6_option2" name="q6_option2" value="2">
+            <label for="q6_option2" id="q6_option2_lab"></label><br>
+            <input type="checkbox" id="q6_option3" name="q6_option3" value="3">
+            <label for="q6_option3" id="q6_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[8/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm7'>
+            <input type="checkbox" id="q7_option1" name="q7_option1" value="1">
+            <label for="q7_option1" id="q7_option1_lab"></label><br>
+            <input type="checkbox" id="q7_option2" name="q7_option2" value="2">
+            <label for="q7_option2" id="q7_option2_lab"></label><br>
+            <input type="checkbox" id="q7_option3" name="q7_option3" value="3">
+            <label for="q7_option3" id="q7_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[9/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm8'>
+            <input type="checkbox" id="q8_option1" name="q8_option1" value="1">
+            <label for="q8_option1" id="q8_option1_lab"></label><br>
+            <input type="checkbox" id="q8_option2" name="q8_option2" value="2">
+            <label for="q8_option2" id="q8_option2_lab"></label><br>
+            <input type="checkbox" id="q8_option3" name="q8_option3" value="3">
+            <label for="q8_option3" id="q8_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[10/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm9'>
+            <input type="checkbox" id="q9_option1" name="q9_option1" value="1">
+            <label for="q9_option1" id="q9_option1_lab"></label><br>
+            <input type="checkbox" id="q9_option2" name="q9_option2" value="2">
+            <label for="q9_option2" id="q9_option2_lab"></label><br>
+            <input type="checkbox" id="q9_option3" name="q9_option3" value="3">
+            <label for="q9_option3" id="q9_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[11/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm10'>
+            <input type="checkbox" id="q10_option1" name="q10_option1" value="1">
+            <label for="q10_option1" id="q10_option1_lab"></label><br>
+            <input type="checkbox" id="q10_option2" name="q10_option2" value="2">
+            <label for="q10_option2" id="q10_option2_lab"></label><br>
+            <input type="checkbox" id="q10_option3" name="q10_option3" value="3">
+            <label for="q10_option3" id="q10_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[12/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm11'>
+            <input type="checkbox" id="q11_option1" name="q11_option1" value="1">
+            <label for="q11_option1" id="q11_option1_lab"></label><br>
+            <input type="checkbox" id="q11_option2" name="q11_option2"value="2">
+            <label for="q11_option2" id="q11_option2_lab"></label><br>
+            <input type="checkbox" id="q11_option3" name="q11_option3" value="3">
+            <label for="q11_option3" id="q11_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[13/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm12'>
+            <input type="checkbox" id="q12_option1" name="q12_option1" value="1">
+            <label for="q12_option1" id="q12_option1_lab"></label><br>
+            <input type="checkbox" id="q12_option2" name="q12_option2" value="2">
+            <label for="q12_option2" id="q12_option2_lab"></label><br>
+            <input type="checkbox" id="q12_option3" name="q12_option3" value="3">
+            <label for="q12_option3" id="q12_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[14/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm13'>
+            <input type="checkbox" id="q13_option1" name="q13_option1" value="1">
+            <label for="q13_option1" id="q13_option1_lab"></label><br>
+            <input type="checkbox" id="q13_option2" name="q13_option2" value="2">
+            <label for="q13_option2" id="q13_option2_lab"></label><br>
+            <input type="checkbox" id="q13_option3" name="q13_option3" value="3">
+            <label for="q13_option3" id="q13_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[15/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm14'>
+            <input type="checkbox" id="q14_option1" name="q14_option1" value="1">
+            <label for="q14_option1" id="q14_option1_lab"></label><br>
+            <input type="checkbox" id="q14_option2" name="q14_option2" value="2">
+            <label for="q14_option2" id="q14_option2_lab"></label><br>
+            <input type="checkbox" id="q14_option3" name="q14_option3" value="3">
+            <label for="q14_option3" id="q14_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[16/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm15'>
+            <input type="checkbox" id="q15_option1" name="q15_option1" value="1">
+            <label for="q15_option1" id="q15_option1_lab"></label><br>
+            <input type="checkbox" id="q15_option2" name="q15_option2" value="2">
+            <label for="q15_option2" id="q15_option2_lab"></label><br>
+            <input type="checkbox" id="q15_option3" name="q15_option3" value="3">
+            <label for="q15_option3" id="q15_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[17/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm16'>
+            <input type="checkbox" id="q16_option1" name="q16_option1" value="1">
+            <label for="q16_option1" id="q16_option1_lab"></label><br>
+            <input type="checkbox" id="q16_option2" name="q16_option2" value="2">
+            <label for="q16_option2" id="q16_option2_lab"></label><br>
+            <input type="checkbox" id="q16_option3" name="q16_option3" value="3">
+            <label for="q16_option3" id="q16_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[18/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm17'>
+            <input type="checkbox" id="q17_option1" name="q17_option1" value="1">
+            <label for="q17_option1" id="q17_option1_lab"></label><br>
+            <input type="checkbox" id="q17_option2" name="q17_option2" value="2">
+            <label for="q17_option2" id="q17_option2_lab"></label><br>
+            <input type="checkbox" id="q17_option3" name="q17_option3" value="3">
+            <label for="q17_option3" id="q17_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[19/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm18'>
+            <input type="checkbox" id="q18_option1" name="q18_option1" value="1">
+            <label for="q18_option1" id="q18_option1_lab"></label><br>
+            <input type="checkbox" id="q18_option2" name="q18_option2" value="2">
+            <label for="q18_option2" id="q18_option2_lab"></label><br>
+            <input type="checkbox" id="q18_option3" name="q18_option3" value="3">
+            <label for="q18_option3" id="q18_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[20/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm19'>
+            <input type="checkbox" id="q19_option1" name="q19_option1" value="1">
+            <label for="q19_option1" id="q19_option1_lab"></label><br>
+            <input type="checkbox" id="q19_option2" name="q19_option2" value="2">
+            <label for="q19_option2" id="q19_option2_lab"></label><br>
+            <input type="checkbox" id="q19_option3" name="q19_option3" value="3">
+            <label for="q19_option3" id="q19_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+      <div class='row justify-content-center'>
+      <div class='col-6'>
+      <h4>[21/21] Select the two most related words:</h4>
+      <div class='row' style='justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+          <form id='questionForm20'>
+            <input type="checkbox" id="q20_option1" name="q20_option1" value="1">
+            <label for="q20_option1" id="q20_option1_lab"></label><br>
+            <input type="checkbox" id="q20_option2" name="q20_option2" value="2">
+            <label for="q20_option2" id="q20_option2_lab"></label><br>
+            <input type="checkbox" id="q20_option3" name="q20_option3" value="3">
+            <label for="q20_option3" id="q20_option3_lab"></label><br><br>
+          </form>
+      </div>
+      </div>
+      </div>
+
+    <!-- <div class="submitForm">Submit the form by clicking this</div> -->
+
+    <div class='row justify-content-center' style='margin-top: 10px; padding-bottom: 10px;'>
+      <div class='col-2'>
+        <button id='prev-btn' class='btn btn-lg btn-primary' disabled>Back</button>
+      </div>
+      <div class='col-2'>
+        <span id='counter'>
+          <span class='counter-top'></span> / <span class='counter-bottom'></span>
+        </span>
+      </div>
+      <div class='col-2'>
+        <button id='next-btn' class='btn btn-lg btn-primary' disabled>Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--IMPORTANT: This import contains all the functions you need to read in your input data and send back worker outputs.-->  
+{% include "easyturk.html" %}
+
+  <script>
+
+    function shuffle(array) {
+      let currentIndex = array.length,  randomIndex;
+
+      // While there remain elements to shuffle.
+      while (currentIndex != 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+
+      return array;
+    }
+
+    // document.getElementById("submitForm").onclick = function() {
+    //   document.getElementById("questionForm0").submit();
+    // };
+
+    // Define some default input.
+    // It is good practice to define standard inputs for a task which will be overwritten when launching
+    // your actual task. The default inputs allow you to render and debug your task locally.
+    var DEFAULT_INPUT = [{'randomize_questions': true,
+                          'randomize_options': true,
+                          'questions':[['writer', 'novel', 'book'],
+                                       ['bus', 'bike', 'passenger'],
+                                       ['winter', 'snow', 'rain'],
+                                       ['river', 'lake', 'boat'],
+                                       ['moon', 'night', 'sun'],
+                                       ['ice', 'water', 'glass'],
+                                       ['clothes', 'skirt', 'lady'],
+                                       ['plane', 'sky', 'train'],
+                                       ['grass', 'goat', 'sheep'],
+                                       ['zoo', 'tiger', 'lion'],
+                                       ['sports', 'basketball', 'player'],
+                                       ['bowl', 'soup', 'food'],
+                                       ['lady', 'mother', 'child'],
+                                       ['gardener', 'flower', 'grass'],
+                                       ['newspaper', 'journalist', 'writer'],
+                                       ['rain', 'summer', 'winter'],
+                                       ['bird', 'tree', 'fish'],
+                                       ['pencil', 'pen', 'notebook'],
+                                       ['crop', 'corn', 'peasant'],
+                                       ['piano', 'guitar', 'performer'],
+                                       ['ship', 'sailor', 'yacht']]}]
+
+
+    // var DEFAULT_INPUT = [{"url": "https://cs.stanford.edu/people/rak248/VG_100K/1160052.jpg",
+    //                       "question": "This is an example question 1",
+    //                       "answer": "Answer 1"},
+    //                      {"url": "https://cs.stanford.edu/people/rak248/VG_100K/1160053.jpg",
+    //                       "question": "This is a sample question 2.",
+    //                       "answer": "Answer 2"}]
+
+    var input = null;
+
+    // This is where we will be collecting the captions for each image;
+    var options = [];
+
+    // Some variables to track state of the HIT.
+    var idx = 0;
+    var enabled = false;
+
+    function main() {
+      // If this is a HIT on AMT, then replace the default input with the real
+      // input.
+      input = easyturk.getInput(DEFAULT_INPUT);
+      console.log(input);
+
+      // Enable the task.
+      if (!easyturk.isPreview()){
+        enableTask();
+      }
+
+      // Set up the correct.
+      _.each(input, function() { options.push(null); });
+
+      // Preload all images
+      _.each(input, function(input_elem) {
+        var imgUrl = input_elem['url'];
+        var img = new Image();
+        img.onload = function() { console.log('loaded image from ' + imgUrl); };
+        img.src = imgUrl;
+      });
+
+      render();
+    }
+
+    // Use the current index to update the image and description
+    function render() {
+        // Set up the image
+        // $('#image-container').empty();
+        // $("<img style='width:100%; height:auto;'>").attr('src', input[idx]['url']).appendTo($('#image-container'));
+
+        var questions = input[idx].questions;
+        if (input[idx].randomize_questions) {
+          shuffle(questions);
+        }
+        if (input[idx].randomize_options) {
+          for (let i = 0; i < questions.length; i++) {
+            shuffle(questions[i]);
+          }
+        }
+
+        // $('#q0_option1').text('test')
+
+        // $('#q0_option1_lab').text('Q: ' + questions[0][0]);
+        // $('#answer').text('A: ' + input[idx].answer);
+
+        for (let i = 0; i < questions.length; i++) {
+          console.log('#q'+i+'_option1')
+          $('#q'+i+'_option1_lab').text(questions[i][0]);
+          $('#q'+i+'_option2_lab').text(questions[i][1]);
+          $('#q'+i+'_option3_lab').text(questions[i][2]);
+        }
+  
+        // Refresh the counter
+        $('.counter-top').text(idx + 1);
+        $('.counter-bottom').text(input.length);
+
+        // Setup the choice that the user already made.
+        render_verification_buttons();
+
+        // If the UI is enabled, enable or disable the buttons depending on
+        // the index.
+        if (enabled) {
+            $('#prev-btn').prop('disabled', false);
+            $('#next-btn').prop('disabled', false);
+            if (idx == 0) {
+                $('#prev-btn').prop('disabled', true);
+            }
+            if (idx == input.length - 1) {
+                $('#next-btn').prop('disabled', true);
+            }
+        }
+    }
+
+    // Render the colors of the buttons to show that user the choice they made.
+    function render_verification_buttons(){
+        if (options[idx] != null) {
+            if (options[idx]) {
+                $('#correct-btn').removeClass('btn-primary').addClass('btn-success');
+                $('#wrong-btn').removeClass('btn-danger').addClass('btn-primary');
+            } else {
+                $('#correct-btn').removeClass('btn-success').addClass('btn-primary');
+                $('#wrong-btn').removeClass('btn-primary').addClass('btn-danger');
+            }
+        } else {
+            if (options[idx]) {
+                $('#correct-btn').removeClass('btn-success').addClass('btn-primary');
+                $('#wrong-btn').removeClass('btn-danger').addClass('btn-primary');
+            } else {
+                $('#correct-btn').removeClass('btn-success').addClass('btn-primary');
+                $('#wrong-btn').removeClass('btn-danger').addClass('btn-primary');
+            }
+        }
+    }
+
+    // Activate verification buttons.
+    $('#correct-btn').click(function() {
+        saveOption(true);
+    })
+    $('#wrong-btn').click(function() {
+        saveOption(false);
+    })
+
+    // Update the index, and save the text in the text area.
+    function setIdx(newIdx) {
+        if (newIdx < 0 || newIdx >= input.length) return;
+        idx = newIdx;
+        render();
+    }
+
+    function saveOption(correct) {
+        options[idx] = correct;
+        render_verification_buttons();
+    }
+
+    // Enable the UI.
+    function enableTask() {
+      enabled = true;
+      easyturk.setupSubmit();
+
+      // Enable components
+      $('#next-btn').click(function() {
+          setIdx(idx + 1);
+      });
+      $('#prev-btn').click(function() {
+          setIdx(idx - 1);
+      });
+      $('#submit-btn').prop('disabled', false);
+
+      $('#submit-btn').click(function() {
+        // Make sure to save the last one.
+        for (var i = 0; i < input.length; i++) {
+          if (options[i] == null || options[i].length == 0) {
+            alert('You did not verify a caption for #' + (i+1));
+            return false;
+          }
+        }
+
+        // Copy the options to the output we will return to the requester.
+        var output = input;
+        for (var i = 0; i < output.length; i++) {
+          output[i]['option'] = options[i];
+        }
+        if (easyturk.isPreview()) {
+          alert("This is only a preview. Here is your output: \n" + JSON.stringify(output));
+          return false;
+        } else {
+          easyturk.setOutput(output);
+          return true;
+        }
+      });
+    }
+
+    main();
+  </script>
+</body>
+</html>

@@ -195,7 +195,7 @@ class EasyTurk(object):
                 self.mtc.delete_hit(HITId=hit_id)
                 return True
             except Exception as e:
-                print e
+                print(e)
                 return False
 
     def approve_hit(self, hit_id, reject_on_fail=False,
