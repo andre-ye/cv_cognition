@@ -80,6 +80,7 @@
         <div id='image-container'>
         </div>
       </div>
+      <button onclick="startTimer(); style.display = 'none'">Click me</button>
     </div>
     <br />
     <br />
@@ -150,11 +151,21 @@
       render();
     }
 
+    function startTimer() {
+      document.getElementById("image-container").style.visibility="visible";
+      setInterval(function(){
+        document.getElementById("image-container").style.visibility= "hidden";
+        document.getElementById("caption").style.visibility="visible";
+      },10000); // 10 second timer
+    }
+
     // Use the current index to update the image and description
     function render() {
       // Set up the image
       $('#image-container').empty();
       $("<img style='width:100%; height:auto;'>").attr('src', input[idx]['url']).appendTo($('#image-container'));
+      document.getElementById("image-container").style.visibility="hidden";
+      document.getElementById("caption").style.visibility="hidden";
 
       // Set up the input text field
       $('#caption').val(captions[idx]);
