@@ -1,3 +1,5 @@
+<!-- python easyturk/render.py --template mem_captioning.html --output cat_out.html -->
+
 <html>
 <head>
   <title>Write captions for pictures</title>
@@ -71,6 +73,7 @@
 
 <div class='container tasks-container'>
   <div class='container'>
+    <h2 id='task-title'></h2>
     <h2>Here are the pictures we would like you to write captions for:</h2>
   </div>
 
@@ -80,7 +83,7 @@
         <div id='image-container'>
         </div>
       </div>
-      <button onclick="startTimer(); style.display = 'none'">Click me</button>
+      <button onclick="startTimer()" id='revealButton'>Reveal image</button>
     </div>
     <br />
     <br />
@@ -152,11 +155,16 @@
     }
 
     function startTimer() {
-      document.getElementById("image-container").style.visibility="visible";
-      setInterval(function(){
-        document.getElementById("image-container").style.visibility= "hidden";
+      document.getElementById('revealButton').style.visibility = "hidden";
+      document.getElementById("image-container").style.visibility = "visible";
+      if (input[idx]['mem']) {
+        setInterval(function(){
+          document.getElementById("image-container").style.visibility= "hidden";
+          document.getElementById("caption").style.visibility="visible";
+        },10000); // 10 second timer
+      } else {
         document.getElementById("caption").style.visibility="visible";
-      },10000); // 10 second timer
+      }
     }
 
     // Use the current index to update the image and description
@@ -165,8 +173,17 @@
       $('#image-container').empty();
       $("<img style='width:100%; height:auto;'>").attr('src', input[idx]['url']).appendTo($('#image-container'));
       document.getElementById("image-container").style.visibility="hidden";
-      document.getElementById("caption").style.visibility="hidden";
 
+      if (input[idx]["mem"]) {
+        document.getElementById("caption").style.visibility="hidden";
+        $('#task-title').text("Memorization Task (10 seconds)");
+      } else {
+        document.getElementById("caption").style.visibility="visible";
+        $('#task-title').text("No Memorization Task");
+      }
+      
+      document.getElementById("revealButton").style.visibility = "visible";
+      
       // Set up the input text field
       $('#caption').val(captions[idx]);
 
