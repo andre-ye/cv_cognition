@@ -85,6 +85,7 @@
       </div>
       <button onclick="startTimer()" id='revealButton'>Reveal image</button>
     </div>
+    <h2 id='timer'></h2>
     <br />
     <br />
     <div class='row justify-content-center'>
@@ -154,10 +155,23 @@
       render();
     }
 
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
     function startTimer() {
       document.getElementById('revealButton').style.visibility = "hidden";
       document.getElementById("image-container").style.visibility = "visible";
       if (input[idx]['mem']) {
+        // for (let i = 10; i > 0; i--) {
+        //   delay(1000).then(() => $('#timer').text(i + ' seconds left'));
+        //   // await new Promise(resolve => setTimeout(resolve, 1000));
+        //   // setInterval(function() {
+        //   //   $('#timer').text(i + ' seconds left');
+        //   // }, 1000);
+        // }
+        // document.getElementById("image-container").style.visibility= "hidden";
+        // document.getElementById("caption").style.visibility="visible";
         setInterval(function(){
           document.getElementById("image-container").style.visibility= "hidden";
           document.getElementById("caption").style.visibility="visible";
